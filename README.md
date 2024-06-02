@@ -1,32 +1,34 @@
-1. Скачайте проект или инициализируйте директоририю.
+# Проект для конкурса
 
-2. Установите необходимые для проекта зависимости
-pip install -r requirements.txt
+## 1. Скачайте проект или инициализируйте директоририю
 
-3. Создайте базу в PostgreSQL.
+## 2. Установите необходимые для проекта зависимости
+``` pip install -r requirements.txt ```
 
-4. Перейдите в настройки проекта [soda/settings.py] и в графе DATABASES установите настройки подключения: NAME, USER, PASSWORD.
+## 3. Создайте базу в PostgreSQL.
 
-5. Осуществите миграцию с помощью команды:
-python manage.py migrate
+## 4. Перейдите в настройки проекта [soda/settings.py] и в графе DATABASES установите настройки подключения: NAME, USER, PASSWORD.
 
-6. Создайте суперпользователя.
+## 5. Осуществите миграцию с помощью команды:
+``` python manage.py migrate ```
 
-from django.contrib.auth.models import User
-user = User.objects.create_user('rsreu', 'test@example.com', 'rsreu2024')
-user.save()
+## 6. Создайте суперпользователя.
 
+``` from django.contrib.auth.models import User ```
+``` user = User.objects.create_user('rsreu', 'test@example.com', 'rsreu2024') ```
+``` user.save() ```
 
-7. Выполните команду python manage.py shell
+ ## 7. Перейдите в терминал
+``` python manage.py shell ```
 
-8. Введите следующий код:
-from django.contrib.auth.models import User
-superuser = User.objects.create_superuser(‘rsreu’, 'admin@example.com', ‘rsreu2024’)
-superuser.save()
+## 8. Создайте суперпользователя
+``` from django.contrib.auth.models import User ```
+``` superuser = User.objects.create_superuser(‘rsreu’, 'admin@example.com', ‘rsreu2024’) ```
+``` superuser.save() ```
 
-9. Запустите сервер с помощью команды:
-python manage.py runserver
+## 9. Запустите сервер
+``` python manage.py runserver ```
 
-10. Авторизуйтесь по данным созданного суперпользователя:
+## 10. Авторизуйтесь по данным созданного суперпользователя
 username: rsreu
-password: rsreu
+password: rsreu2024
