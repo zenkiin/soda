@@ -12,15 +12,17 @@
 ## 5. Осуществите миграцию с помощью команды:
 ``` python manage.py migrate ```
 
- ## 6. Перейдите в терминал
+## 6. Выполните CountersInfo.sql
+
+## 7. Перейдите в терминал
 ``` python manage.py shell ```
 
-## 7. Создайте суперпользователя
+## 8. Создайте суперпользователя
 ``` from django.contrib.auth.models import User superuser = User.objects.create_superuser(‘rsreu’, 'admin@example.com', ‘rsreu2024’) superuser.save() ```
 
-## 8. Запустите сервер
+## 9. Запустите сервер
 ``` python manage.py runserver ```
 
-## 9. Авторизуйтесь по данным созданного суперпользователя
+## 10. Авторизуйтесь по данным созданного суперпользователя
 username: rsreu
 password: rsreu2024
