@@ -18,9 +18,9 @@
 ## 7. Создайте суперпользователя
 ``` from django.contrib.auth.models import User superuser = User.objects.create_superuser(‘rsreu’, 'admin@example.com', ‘rsreu2024’) superuser.save() ```
 
-## 9. Запустите сервер
+## 8. Запустите сервер
 ``` python manage.py runserver ```
 
-## 10. Авторизуйтесь по данным созданного суперпользователя
+## 9. Авторизуйтесь по данным созданного суперпользователя
 username: rsreu
 password: rsreu2024
