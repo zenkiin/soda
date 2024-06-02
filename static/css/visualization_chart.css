@@ -1,0 +1,72 @@
+h1 {
+    color: #333333;
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+
+.add-y-axis-btn, .save-visualization-btn {
+    font-family: 'Comfortaa', cursive; /* Устанавливаем шрифт Comfortaa */
+    background-color: #A7AAFF; /* Цвет кнопки */
+    color: #000000; /* Цвет текста в кнопке */
+    border: none;
+    border-radius: 10px; /* Скругленные углы */
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-y-axis-btn:hover {
+    background-color: #8F99E6;
+}
+
+#chart-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+.delete-visualization-btn, .edit-visualization-btn {
+    font-family: 'Comfortaa', cursive; /* Устанавливаем шрифт Comfortaa */
+    background-color: #A7AAFF; /* Цвет кнопки */
+    color: #000000; /* Цвет текста в кнопке */
+    border: none;
+    border-radius: 10px; /* Скругленные углы */
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.remove-yxxis-btn, .cancel-edit-btn {
+    font-family: 'Comfortaa', cursive; /* Устанавливаем шрифт Comfortaa */
+    background-color: #F8F8F8; /* Цвет кнопки */
+    color: #000000; /* Цвет текста в кнопке */
+    border: 1px solid #000000; /* Тонкая обводка синего цвета */
+    border-radius: 10px; /* Скругленные углы */
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}

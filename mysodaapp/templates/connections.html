@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Подключения{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <h1><img src="/static/assets/green.png" alt="Подключения" width="50" height="50" style="margin-right: 10px;"> Подключения</h1>
+        </div>
+    </div>
+    <div class="row mb-1">
+        <div class="col">
+            <a class="btn btn-custom" href="{% url 'add_counter' %}">Добавить</a>
+        </div>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Название</th>
+                <th scope="col">Источник</th>
+                <th scope="col">ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for counter in counters %}
+            <tr>
+                <td>{{ counter.name }}</td>
+                <td>
+                    {% if counter.counter_id != '0' %}
+                    <img src="/static/assets/icon__yandex_metrica.png" alt="Yandex.Metrica" width="25" height="25"> Yandex.Metrica
+                    {% endif %}
+                </td>
+                <td>{{ counter.counter_id }}</td>
+                <td>
+                    <a href="{% url 'delete_counter' counter.id %}" onclick="return confirm('Вы уверены, что хотите удалить этот счётчик?');">
+                        <i class="fas fa-times" style="color: red;"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

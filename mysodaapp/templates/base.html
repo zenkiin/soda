@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My Site{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/icon.ico' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div id="sidebar" class="sidebar">
+        <a href="{% url 'connections' %}"><img src="{% static 'assets/connections.png' %}" alt="Подключения" width="24" height="24"> <span>Подключения</span></a>
+        <a href="{% url 'data' %}"><img src="{% static 'assets/data.png' %}" alt="Данные" width="24" height="24"> <span>Данные</span></a>
+        <a href="{% url 'visualizations' %}"><img src="{% static 'assets/visualizations.png' %}" alt="Визуализации" width="24" height="24"> <span>Визуализации</span></a>
+        <a href="{% url 'logout' %}"><img src="{% static 'assets/exit.png' %}" alt="Визуализации" width="24" height="24"> <span>Выход</span></a>
+    </div>
+    <div class="main-content">
+        <span class="toggle-btn" onclick="toggleSidebar()">
+            <img src="{% static 'assets/menu.png' %}" alt="Меню" width="24" height="24">
+        </span>
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+        // Function to toggle sidebar
+        function toggleSidebar() {
+            document.body.classList.toggle('collapsed');
+            if (document.body.classList.contains('collapsed')) {
+                localStorage.setItem('sidebarState', 'collapsed');
+            } else {
+                localStorage.setItem('sidebarState', 'expanded');
+            }
+        }
+
+        // Function to set sidebar state on load
+        function setSidebarState() {
+            const sidebarState = localStorage.getItem('sidebarState');
+            if (sidebarState === 'collapsed') {
+                document.body.classList.add('collapsed');
+            } else {
+                document.body.classList.remove('collapsed');
+            }
+        }
+
+        // Set sidebar state on page load
+        window.onload = setSidebarState;
+    </script>
+</body>
+</html>

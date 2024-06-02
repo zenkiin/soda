@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            font-family: 'Comfortaa', sans-serif;
+        }
+        .container-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        .card {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .custom-button {
+            background-color: #DDA7FF;
+            color: #000000;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .custom-button:hover {
+            background-color: #C25DFF;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+        }
+        .header img {
+            margin-right: 10px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .form-label {
+            flex: 1;
+            padding-right: 10px;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+        }
+        .form-input {
+            flex: 2;
+        }
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="password"],
+        form select,
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #C1C1C1;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+        form input[type="text"]::placeholder,
+        form input[type="email"]::placeholder,
+        form input[type="password"]::placeholder,
+        form textarea::placeholder {
+            color: #C1C1C1;
+        }
+    </style>
+</head>
+
+{% block extra_head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/icon.ico' %}">
+{% endblock %}
+
+<body>
+    <div class="container container-center">
+        <div class="card">
+            <div class="card-body">
+                <div class="header">
+                    <img src="/static/assets/soda.png" alt="Подключения" height="50">
+                </div>
+                <p>Специально для конкурса по клиент-серверным приложениям баз данных</p>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="custom-button d-block mx-auto" type="submit">Войти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

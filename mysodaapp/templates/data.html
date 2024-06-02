@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %}Данные{% endblock %}
+
+{% block extra_head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/data.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col">
+                <h1><img src="/static/assets/red.png" alt="Данные" width="50" height="50" style="margin-right: 10px;"> Данные</h1>
+            </div>
+        </div>
+
+        <!-- Форма для выбора счетчика -->
+        <form id="counterForm" onsubmit="event.preventDefault(); showCounterData();">
+            <label class="info" for="counter-select">Выберите счетчик:</label>
+            <select id="counter-select" name="counter">
+                {% for counter in counters %}
+                    <option value="{{ counter.id }}">{{ counter.name }}</option>
+                {% endfor %}
+            </select>
+            <button class="submit-data" type="submit">Выбрать</button>
+        </form>
+
+        <!-- Контент для выбранного счетчика -->
+        <div id="counterContent">
+            <!-- Динамически изменяемый контент для выбранного счетчика -->
+        </div>
+    </div>
+</div>
+
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function fetchData(counterId, startDate, endDate) {
+        fetch(`/fetch_yandex_metrics_data/${counterId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ startDate, endDate })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                let table = '<table><tr><th>Дата</th><th>Пользователи</th><th>Визиты</th><th>Просмотры страниц</th></tr>';
+                data.results.forEach(row => {
+                    table += `<tr><td>${row.date}</td><td>${row.users}</td><td>${row.visits}</td><td>${row.pageviews}</td></tr>`;
+                });
+                table += '</table>';
+                document.getElementById(`results-${counterId}`).innerHTML = table;
+                document.getElementById(`clear-button-${counterId}`).style.display = 'block';
+            }
+        });
+    }
+
+    function showAllData(counterId) {
+        fetch(`/fetch_all_yandex_metrics_data/${counterId}/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                let table = '<table><tr><th>Дата</th><th>Пользователи</th><th>Визиты</th><th>Просмотры страниц</th></tr>';
+                data.results.forEach(row => {
+                    table += `<tr><td>${row.date}</td><td>${row.users}</td><td>${row.visits}</td><td>${row.pageviews}</td></tr>`;
+                });
+                table += '</table>';
+                document.getElementById(`results-${counterId}`).innerHTML = table;
+                document.getElementById(`clear-button-${counterId}`).style.display = 'block';
+            }
+        });
+    }
+
+    function clearData(counterId) {
+        fetch(`/delete_data/${counterId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                document.getElementById(`results-${counterId}`).innerHTML = '';
+                document.getElementById(`clear-button-${counterId}`).style.display = 'none';
+            }
+        });
+    }
+
+    function showCounterData() {
+        const counterId = document.getElementById('counter-select').value;
+        const counterContent = document.getElementById('counterContent');
+
+        // Очистка предыдущего контента
+        counterContent.innerHTML = '';
+
+        // Создание нового контента для выбранного счетчика
+        const content = `
+            <h2>Данные из подключения</h2>
+            <form onsubmit="event.preventDefault(); fetchData(${counterId}, document.getElementById('start-date-${counterId}').value, document.getElementById('end-date-${counterId}').value);">
+                <label for="start-date-${counterId}">Начальная дата:</label>
+                <input type="date" id="start-date-${counterId}" name="start-date" min="2023-01-01" max="{{ current_date }}">
+                <label for="end-date-${counterId}">Конечная дата:</label>
+                <input type="date" id="end-date-${counterId}" name="end-date" min="2023-01-01" max="{{ current_date }}">
+                <button class="submit-data" type="submit">Добавить данные</button>
+            </form>
+            <button class="showAllData" onclick="showAllData(${counterId});">Показать текущие данные по счетчику</button>
+            <button class="clearAllData" id="clear-button-${counterId}" onclick="clearData(${counterId});" style="display:none;">Удалить данные из системы</button>
+            <div id="results-${counterId}">
+                <!-- Здесь будет отображаться таблица данных -->
+            </div>
+        `;
+        counterContent.innerHTML = content;
+    }
+</script>
+{% endblock %}

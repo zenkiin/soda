@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Визуализации{% endblock %}
+
+{% block extra_head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/visualizations.css' %}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <h1><img src="{% static 'assets/blue.png' %}" alt="Визуализации" width="50" height="50" style="margin-right: 10px;"> Визуализации</h1>
+        </div>
+    </div>
+    <div class="row mb-1">
+        <div class="col">
+            <a class="btn btn-add" href="#" onclick="showAddVisualizationForm()">Добавить</a>
+        </div>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Название</th>
+                <th scope="col">Ось X</th>
+                <th scope="col">Ось Y</th>
+                <th scope="col">Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for visualization in visualizations %}
+            <tr>
+                <td>
+                    <a href="{% url 'visualization_chart' visualization.id %}" class="btn-link">{{ visualization.name }}</a>
+                </td>
+                <td>{{ visualization.x_axis }}</td>
+                <td>{{ visualization.y_axes|join:", " }}</td>
+                <td>
+                    <a href="#" onclick="deleteVisualization({{ visualization.id }}); return false;">
+                        <i class="fas fa-times" style="color: red;"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div id="add-visualization-form" style="display:none;">
+    <h3>Добавить визуализацию</h3>
+    <form action="{% url 'add_visualization' %}" method="post">
+        {% csrf_token %}
+        <label for="visualization-name">Название:</label>
+        <input type="text" id="visualization-name" name="visualization_name" required>
+        <button type="submit" class="btn btn-custom">Добавить</button>
+        <button type="button" class="btn btn-custom" onclick="hideAddVisualizationForm()">Отменить</button>
+    </form>
+</div>
+
+<script>
+    function showAddVisualizationForm() {
+        document.getElementById('add-visualization-form').style.display = 'block';
+    }
+
+    function hideAddVisualizationForm() {
+        document.getElementById('add-visualization-form').style.display = 'none';
+    }
+
+    function deleteVisualization(visualizationId) {
+        if (confirm('Вы уверены, что хотите удалить эту визуализацию?')) {
+            fetch(`/visualizations/${visualizationId}/delete/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    window.location.href = "{% url 'visualizations' %}";
+                } else {
+                    alert('Ошибка при удалении визуализации.');
+                }
+            })
+            .catch(error => console.error('Ошибка:', error));
+        }
+    }
+</script>
+{% endblock %}

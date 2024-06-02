@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ visualization.name }}{% endblock %}
+
+{% block extra_head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/visualization_chart.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <h1><img src="{% static 'assets/blue.png' %}" alt="Визуализации" width="50" height="50" style="margin-right: 10px;">{{ visualization.name }}</h1>
+    </div>
+</div>
+
+<div id="controls">
+    <label for="x-axis">Выберите значение для оси X:</label>
+    <select id="x-axis">
+        <option value="date">По дате</option>
+        <option value="month">По месяцу</option>
+        <option value="quarter">По кварталу</option>
+    </select>
+
+    <h3>Оси Y:</h3>
+    <div id="y-axes-container">
+        <!-- Контейнер для осей Y -->
+    </div>
+    <button class="add-y-axis-btn" id="add-y-axis-btn" onclick="addYAxis()">Добавить ось Y</button>
+    <button class="save-visualization-btn" id="save-visualization-btn" onclick="saveVisualization()">Сохранить</button>
+</div>
+
+<div id="edit-controls" style="display: none;">
+    <button class="edit-visualization-btn" onclick="editVisualization()">Изменить</button>
+    <button class="delete-visualization-btn" onclick="deleteVisualization()">Удалить</button>
+</div>
+
+<div id="edit-mode-controls" style="display: none;">
+    <button class="cancel-edit-btn" onclick="cancelEdit()">Отменить</button>
+</div>
+
+<div id="chart-container">
+    <canvas id="chart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+function addYAxis() {
+    const yAxesContainer = document.getElementById('y-axes-container');
+    const yAxisIndex = yAxesContainer.children.length;
+
+    const yAxisDiv = document.createElement('div');
+    yAxisDiv.id = `y-axis-${yAxisIndex}`;
+
+    yAxisDiv.innerHTML = `
+        <label for="y-axis-select-${yAxisIndex}">Выберите значение для оси Y:</label>
+        <select id="y-axis-select-${yAxisIndex}">
+            {% for counter in counters %}
+                <option value="{{ counter.id }}.users">{{ counter.name }}.users</option>
+                <option value="{{ counter.id }}.visits">{{ counter.name }}.visits</option>
+                <option value="{{ counter.id }}.pageviews">{{ counter.name }}.pageviews</option>
+            {% endfor %}
+        </select>
+        <input type="color" id="color-${yAxisIndex}" value="#000000">
+        <button class="remove-yxxis-btn" type="button" onclick="removeYAxis(${yAxisIndex})">Удалить</button>
+    `;
+
+    yAxesContainer.appendChild(yAxisDiv);
+}
+
+function removeYAxis(index) {
+    const yAxisDiv = document.getElementById(`y-axis-${index}`);
+    yAxisDiv.remove();
+}
+
+function generateChart() {
+    const xAxis = document.getElementById('x-axis').value;
+
+    const yAxes = [];
+    const colors = [];
+    const yAxesContainer = document.getElementById('y-axes-container');
+
+    for (let i = 0; i < yAxesContainer.children.length; i++) {
+        const yAxisSelect = document.getElementById(`y-axis-select-${i}`);
+        const colorInput = document.getElementById(`color-${i}`);
+        if (yAxisSelect && colorInput) {
+            yAxes.push(yAxisSelect.value);
+            colors.push(colorInput.value);
+        }
+    }
+
+    fetch("{% url 'get_chart_data' %}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ xAxis, yAxes })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            const ctx = document.getElementById('chart').getContext('2d');
+            const datasets = data.datasets.map((dataset, index) => ({
+                label: yAxes[index],
+                data: dataset.data,
+                borderColor: colors[index],
+                borderWidth: 1,
+                fill: false,
+                yAxisID: `y-axis-${index}`
+            }));
+
+            const yAxesOptions = data.datasets.map((dataset, index) => ({
+                id: `y-axis-${index}`,
+                position: index % 2 === 0 ? 'left' : 'right',
+                grid: {
+                    display: index === 0 // Only show grid for the first y-axis
+                },
+                title: {
+                    display: true,
+                    text: yAxes[index]
+                }
+            }));
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: datasets
+                },
+                options: {
+                    scales: {
+                        x: {
+                            type: 'category',
+                            labels: data.labels
+                        },
+                        y: yAxesOptions.reduce((acc, cur) => {
+                            acc[cur.id] = cur;
+                            return acc;
+                        }, {})
+                    }
+                }
+            });
+
+            document.getElementById('controls').style.display = 'none';
+            document.getElementById('edit-controls').style.display = 'block';
+        }
+    });
+}
+
+function saveVisualization() {
+    const xAxis = document.getElementById('x-axis').value;
+
+    const yAxes = [];
+    const colors = [];
+    const yAxesContainer = document.getElementById('y-axes-container');
+
+    for (let i = 0; i < yAxesContainer.children.length; i++) {
+        const yAxisSelect = document.getElementById(`y-axis-select-${i}`);
+        const colorInput = document.getElementById(`color-${i}`);
+        if (yAxisSelect && colorInput) {
+            yAxes.push(yAxisSelect.value);
+            colors.push(colorInput.value);
+        }
+    }
+
+    fetch("{% url 'save_visualization' visualization.id %}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ xAxis, yAxes, colors })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            alert('Визуализация сохранена');
+            generateChart(); // Перегенерация графика после сохранения
+            cancelEdit(); // Возврат в режим просмотра
+        }
+    });
+}
+
+function editVisualization() {
+    document.getElementById('controls').style.display = 'block';
+    document.getElementById('edit-controls').style.display = 'none';
+    document.getElementById('edit-mode-controls').style.display = 'block';
+
+    // Отключение выбора оси X и вывод информации
+    document.getElementById('x-axis').disabled = true;
+    const xAxisLabel = document.querySelector('label[for="x-axis"]');
+    xAxisLabel.innerHTML = 'Ось X невозможно настроить в данной версии приложения.';
+}
+
+function cancelEdit() {
+    document.getElementById('controls').style.display = 'none';
+    document.getElementById('edit-controls').style.display = 'block';
+    document.getElementById('edit-mode-controls').style.display = 'none';
+
+    // Включение выбора оси X при отмене редактирования
+    document.getElementById('x-axis').disabled = false;
+    const xAxisLabel = document.querySelector('label[for="x-axis"]');
+    xAxisLabel.innerHTML = 'Выберите значение для оси X:';
+}
+
+function deleteVisualization() {
+    if (confirm('Вы уверены, что хотите удалить эту визуализацию?')) {
+        fetch("{% url 'delete_visualization' visualization.id %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                alert('Визуализация удалена');
+                window.location.href = "{% url 'visualizations' %}";
+            }
+        });
+    }
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Если визуализация уже имеет сохраненные оси Y, загрузить их
+    const initialYAxes = {{ visualization.y_axes|safe }};
+    const initialColors = {{ visualization.colors|safe }};
+    const initialXAxis = "{{ visualization.x_axis }}"; // Загрузка оси X
+
+    document.getElementById('x-axis').value = initialXAxis; // Установка значения оси X
+
+    initialYAxes.forEach((yAxis, index) => {
+        addYAxis();
+        document.getElementById(`y-axis-select-${index}`).value = yAxis;
+        document.getElementById(`color-${index}`).value = initialColors[index];
+    });
+
+    if (initialYAxes.length > 0) {
+        generateChart();
+    }
+});
+</script>
+{% endblock %}

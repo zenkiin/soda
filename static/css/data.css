@@ -1,0 +1,203 @@
+body {
+    font-family: 'Comfortaa', cursive;
+    background-color: #F8F8F8;
+    display: flex;
+}
+
+.main {
+    margin-left: 100px;
+    padding: 100px;
+    transition: margin-left .5s;
+}
+
+
+/* Общие стили для страницы */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #C1C1C1;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.counterForm {
+    margin: 20px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+/* Стили для таблицы данных */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px; /* Увеличение расстояния между строками */
+}
+
+th, td {
+    padding: 10px 20px; /* Увеличение отступов внутри ячеек */
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Стили для вкладок */
+.nav-tabs {
+    border-bottom: 1px solid #ddd;
+}
+
+.nav-item {
+    display: inline-block;
+    margin-bottom: -1px;
+}
+
+.nav-link {
+    display: block;
+    padding: 10px 15px;
+    margin-right: 2px;
+    font-size: 16px;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    background-color: #f8f8f8;
+    cursor: pointer;
+}
+
+.nav-link.active {
+    background-color: #fff;
+    border-color: #ddd #ddd #fff;
+    color: #000;
+}
+
+.tab-content {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-top: none;
+    background-color: #fff;
+    border-radius: 0 4px 4px 4px;
+}
+
+/* Стили для формы */
+form {
+    margin-bottom: 30px;
+}
+
+form label {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+form input[type="date"] {
+    padding: 5px 10px;
+    margin-right: 10px;
+    border: 1px solid #C1C1C1;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+form button {
+    background-color: #A7FFCA; /* Цвет кнопки */
+    color: #000000; /* Цвет текста в кнопке */
+    border: none;
+    border-radius: 10px; /* Скругленные углы */
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #8FE6B0;
+}
+
+.showAllData {
+    background-color: #F8F8F8; /* Цвет фона кнопки */
+    color: #000000; /* Цвет текста в кнопке */
+    border: 1px solid #FF6C6C; /* Обводка в 1px указанного цвета */
+    border-radius: 10px; /* Скругленные углы */
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: #FF6C6C;
+}
+
+.showAllData:hover {
+    background-color: #F8F8F8; /* Цвет фона кнопки */
+    color: #000000; /* Цвет текста в кнопке */
+    border: 1px solid #FF6C6C; /* Обводка в 1px указанного цвета */
+    border-radius: 10px; /* Скругленные углы */
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: #FF6C6C;
+}
+
+.clearAllData {
+    background-color: #F8F8F8; /* Цвет фона кнопки */
+    color: #000000; /* Цвет текста в кнопке */
+    border: 1px solid #FF6C6C; /* Обводка в 1px указанного цвета */
+    border-radius: 10px; /* Скругленные углы */
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    color: #FF6C6C;
+}
+
+.clearAllData:hover {
+    background-color: #F8F8F8; /* Цвет фона кнопки */
+    color: #000000; /* Цвет текста в кнопке */
+    border: 1px solid #FF6C6C; /* Обводка в 1px указанного цвета */
+    border-radius: 10px; /* Скругленные углы */
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: #FF6C6C;
+}
+
+.submit-data {
+    background-color: #FFA7A7; /* Цвет кнопки */
+    color: #000000; /* Цвет текста в кнопке */
+    border: none;
+    border-radius: 10px; /* Скругленные углы */
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-data:hover {
+    background-color: #FF6C6C; /* Цвет кнопки */
+    color: #000000; /* Цвет текста в кнопке */
+    border: none;
+    border-radius: 10px; /* Скругленные углы */
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.info {
+    margin-bottom: 15px;
+}
+
+.submit-data {
+    margin-top: 15px;
+}

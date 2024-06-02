@@ -1,0 +1,78 @@
+body {
+    font-family: 'Comfortaa', cursive;
+    display: flex;
+    background-color: #F8F8F8; /* Цвет фона */
+    font-size: 80%; /* Уменьшение всего текста на 30% */
+}
+
+form h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.form-label {
+    flex: 1;
+    padding-right: 10px;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+}
+
+.form-input {
+    flex: 2;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #C1C1C1;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+form input[type="text"]::placeholder,
+form input[type="email"]::placeholder,
+form input[type="password"]::placeholder,
+form textarea::placeholder {
+    color: #C1C1C1;
+}
+
+form button {
+    background-color: #A7FFCA; /* Цвет кнопки */
+    color: #000000; /* Цвет текста в кнопке */
+    border: none;
+    border-radius: 10px; /* Скругленные углы */
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #8FE6B0;
+}
+
+.text-muted {
+    font-size: 14px;
+}
