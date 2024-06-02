@@ -12,19 +12,11 @@
 ## 5. Осуществите миграцию с помощью команды:
 ``` python manage.py migrate ```
 
-## 6. Создайте суперпользователя.
-
-``` from django.contrib.auth.models import User ```
-``` user = User.objects.create_user('rsreu', 'test@example.com', 'rsreu2024') ```
-``` user.save() ```
-
- ## 7. Перейдите в терминал
+ ## 6. Перейдите в терминал
 ``` python manage.py shell ```
 
-## 8. Создайте суперпользователя
-``` from django.contrib.auth.models import User ```
-``` superuser = User.objects.create_superuser(‘rsreu’, 'admin@example.com', ‘rsreu2024’) ```
-``` superuser.save() ```
+## 7. Создайте суперпользователя
+``` from django.contrib.auth.models import User superuser = User.objects.create_superuser(‘rsreu’, 'admin@example.com', ‘rsreu2024’) superuser.save() ```
 
 ## 9. Запустите сервер
 ``` python manage.py runserver ```
